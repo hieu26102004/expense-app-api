@@ -19,4 +19,8 @@ export class UsersService {
   findByEmail(email: string) {
     return this.repo.findOne({ where: { email } });
   }
+
+  findOne(criteria: Partial<User>) {
+    return this.repo.findOne({ where: criteria });
+  }
 }
