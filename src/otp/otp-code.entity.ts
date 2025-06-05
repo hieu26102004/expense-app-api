@@ -1,19 +1,16 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
-export class User {
+export class OtpCode {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   email: string;
 
   @Column()
-  password: string;
+  code: string;
 
   @Column()
-  name: string;
-
-  @Column({ default: false })
-  isActive: boolean;
+  expiresAt: Date;
 }

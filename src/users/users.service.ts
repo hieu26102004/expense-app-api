@@ -23,4 +23,8 @@ export class UsersService {
   findOne(criteria: Partial<User>) {
     return this.repo.findOne({ where: criteria });
   }
+
+  update(user: User) {
+    return this.repo.save(user);
+  }
 }
