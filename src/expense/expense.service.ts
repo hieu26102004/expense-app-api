@@ -14,4 +14,8 @@ export class ExpenseService {
     const expense = this.expenseRepo.create(data);
     return await this.expenseRepo.save(expense);
   }
+
+  async findOne(id: number, userId: number): Promise<Expense | null> {
+    return this.expenseRepo.findOne({ where: { id, user: { id: userId } } });
+  }
 }
