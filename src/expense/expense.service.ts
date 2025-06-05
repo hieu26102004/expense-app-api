@@ -25,4 +25,8 @@ export class ExpenseService {
     Object.assign(expense, data);
     return this.expenseRepo.save(expense);
   }
+
+  async remove(id: number): Promise<void> {
+    await this.expenseRepo.delete(id);
+  }
 }

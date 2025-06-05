@@ -1,5 +1,5 @@
 import { Expense } from './expense.entity';
-import { Body, Controller, Post, UseGuards, Request, Get, Param, NotFoundException, Patch } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards, Request, Get, Param, NotFoundException, Patch, Delete } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { ExpenseService } from './expense.service';
@@ -62,5 +62,19 @@ export class ExpenseController {
       throw new NotFoundException('Expense not found.');
     }
     return expense;
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Delete an expense by ID' })
+  @ApiResponse({ status: 200, description: 'Expense deleted successfully.' })
+  @ApiResponse({ status: 404, description: 'Expense not found.' })
+  @ApiBearerAuth()
+  async deleteExpense(@Param('id') id: number, @Request() req): Promise<void> {
+    const expense = await this.expenseService.findOne(id, req.user.id);
+    if (!expense) {
+      throw new NotFoundException('Expense not found.');
+    }
+    await this.expenseService.remove(id);
   }
 }
