@@ -18,4 +18,11 @@ export class ExpenseService {
   async findOne(id: number, userId: number): Promise<Expense | null> {
     return this.expenseRepo.findOne({ where: { id, user: { id: userId } } });
   }
+
+  async update(id: number, userId: number, data: Partial<Expense>): Promise<Expense | null> {
+    const expense = await this.findOne(id, userId);
+    if (!expense) return null;
+    Object.assign(expense, data);
+    return this.expenseRepo.save(expense);
+  }
 }

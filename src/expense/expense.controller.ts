@@ -1,9 +1,11 @@
 import { Expense } from './expense.entity';
-import { Body, Controller, Post, UseGuards, Request, Get, Param, NotFoundException } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards, Request, Get, Param, NotFoundException, Patch } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { ExpenseService } from './expense.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { ExpenseValidator } from './validators/expense.validator';
 
 @ApiTags('expense')
 @Controller('expense')
@@ -17,7 +19,9 @@ export class ExpenseController {
   @ApiBearerAuth()
   async createExpense(@Request() req, @Body() expenseData: CreateExpenseDto): Promise<Expense> {
     const { date, ...rest } = expenseData;
-    return this.expenseService.create({ ...rest, date: new Date(date), user: req.user });
+    const expenseDate = new Date(date);
+    ExpenseValidator.validateExpense(expenseData.amount, expenseData.category, expenseDate);
+    return this.expenseService.create({ ...rest, date: expenseDate, user: req.user });
   }
 
   @Get(':id')
@@ -28,6 +32,32 @@ export class ExpenseController {
   @ApiBearerAuth()
   async getExpense(@Param('id') id: number, @Request() req): Promise<Expense> {
     const expense = await this.expenseService.findOne(id, req.user.id);
+    if (!expense) {
+      throw new NotFoundException('Expense not found.');
+    }
+    return expense;
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Update an expense by ID' })
+  @ApiResponse({ status: 200, description: 'Expense updated successfully.' })
+  @ApiResponse({ status: 404, description: 'Expense not found.' })
+  @ApiBearerAuth()
+  async updateExpense(@Param('id') id: number, @Body() data: UpdateExpenseDto, @Request() req): Promise<Expense> {
+    const { date, ...rest } = data;
+    const expenseDate = date ? new Date(date) : null;
+    if (expenseDate) {
+      ExpenseValidator.validateDate(expenseDate);
+    }
+    if (data.amount) {
+      ExpenseValidator.validateAmount(data.amount);
+    }
+    if (data.category) {
+      ExpenseValidator.validateCategory(data.category);
+    }
+    const updateData = expenseDate ? { ...rest, date: expenseDate } : rest;
+    const expense = await this.expenseService.update(id, req.user.id, updateData);
     if (!expense) {
       throw new NotFoundException('Expense not found.');
     }
