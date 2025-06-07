@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { TransactionType } from '../transaction/transaction-type.enum';
+import { User } from 'src/users/user.entity';
 
 export enum IncomeCategory {
   SALARY = 'salary',
@@ -43,9 +44,19 @@ export class CategoryType {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ nullable: true })
+  userId: number;
+
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'userId' })
+  user: User;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 } 
