@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { TransactionType } from './transaction-type.enum';
+import { TransactionType } from '../transaction/transaction-type.enum';
 
 export enum IncomeCategory {
   SALARY = 'salary',

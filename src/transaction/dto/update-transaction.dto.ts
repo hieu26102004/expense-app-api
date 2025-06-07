@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { IncomeCategory, ExpenseCategory } from '../category-type.entity';
+import { ExpenseCategory, IncomeCategory } from 'src/category/category-type.entity';
 import { TransactionType } from '../transaction-type.enum';
 
 export class UpdateTransactionDto {

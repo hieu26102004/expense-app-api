@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from 'src/users/user.entity';
-import { IncomeCategory, ExpenseCategory } from './category-type.entity';
+import { IncomeCategory, ExpenseCategory } from 'src/category/category-type.entity';
 import { TransactionType } from './transaction-type.enum';
 
 @Entity()

@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { IncomeCategory, ExpenseCategory } from '../category-type.entity';
+import { IncomeCategory, ExpenseCategory } from 'src/category/category-type.entity';
 import { TransactionType } from '../transaction-type.enum';
 
 export class TransactionValidator {

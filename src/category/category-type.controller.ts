@@ -2,7 +2,7 @@ import { Controller, Post, Get, UseGuards, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CategoryTypeService } from './category-type.service';
-import { TransactionType } from './transaction-type.enum';
+import { TransactionType } from '../transaction/transaction-type.enum';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -36,4 +36,4 @@ export class CategoryTypeController {
   async getCategoriesByType(@Query('type') type: TransactionType) {
     return this.categoryTypeService.getCategoriesByType(type);
   }
-}
+} 

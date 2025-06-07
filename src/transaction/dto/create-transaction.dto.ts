@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-import { IncomeCategory, ExpenseCategory } from '../category-type.entity';
 import { TransactionType } from '../transaction-type.enum';
+import { ExpenseCategory, IncomeCategory } from 'src/category/category-type.entity';
 
 export class CreateTransactionDto {
   @ApiProperty({ description: 'Amount of the transaction' })

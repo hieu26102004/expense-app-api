@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoryType, IncomeCategory, ExpenseCategory } from './category-type.entity';
-import { TransactionType } from './transaction-type.enum';
+import { TransactionType } from '../transaction/transaction-type.enum';
 
 @Injectable()
 export class CategoryTypeService {
@@ -63,5 +63,4 @@ export class CategoryTypeService {
   async getCategoriesByType(type: TransactionType) {
     return this.categoryTypeRepository.find({ where: { type } });
   }
-}
-
+} 
