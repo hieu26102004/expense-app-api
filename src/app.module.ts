@@ -1,3 +1,4 @@
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -5,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { CategoryModule } from './category/category.module';
+import { User } from './users/user.entity';
+import { Transaction } from './transaction/transaction.entity';
 
 @Module({
   imports: [
@@ -24,6 +27,7 @@ import { CategoryModule } from './category/category.module';
         database: config.get<string>('DB_DATABASE') ?? '',
         autoLoadEntities: true,
         synchronize: true,
+        entities: [User, Transaction],
       }),
     }),
     AuthModule,

@@ -1,5 +1,4 @@
-
-import { Body, Controller, Post, UseGuards, Request, Get, Param, NotFoundException, Patch, Delete } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards, Request, Get, Param, NotFoundException, Patch, Delete, Query } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionService } from './transaction.service';
@@ -7,6 +6,8 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TransactionValidator } from './validators/transaction.validator';
 import { Transaction } from "./transaction.entity";
 import { UpdateTransactionDto } from "./dto/update-transaction.dto";
+import { GetTransactionsDto } from './dto/get-transactions.dto';
+import { GetUser } from "src/auth/get-user.decorator";
 
 @ApiTags('transaction')
 @Controller('transaction')
@@ -82,5 +83,17 @@ export class TransactionController {
       throw new NotFoundException('Transaction not found.');
     }
     await this.transactionService.remove(id);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get all transactions with filtering and pagination' })
+  @ApiResponse({ status: 200, description: 'Return list of transactions' })
+  @ApiBearerAuth()
+  async findAll(
+    @GetUser('id') userId: number,
+    @Query() getTransactionsDto: GetTransactionsDto,
+  ) {
+    return this.transactionService.findAll(userId, getTransactionsDto);
   }
 } 

@@ -1,35 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-
+import { IsNumber, IsString, IsEnum, IsOptional, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
 import { TransactionType } from '../transaction-type.enum';
-import { ExpenseCategory, IncomeCategory } from 'src/category/category-type.entity';
+import { IncomeCategory, ExpenseCategory } from '../../category/category-type.entity';
 
 export class CreateTransactionDto {
-  @ApiProperty({ description: 'Amount of the transaction' })
+  @ApiProperty()
   @IsNumber()
-  @IsNotEmpty()
   amount: number;
 
-  @ApiProperty({ description: 'Type of transaction (income or expense)', enum: TransactionType })
+  @ApiProperty({ enum: TransactionType })
   @IsEnum(TransactionType)
-  @IsNotEmpty()
   type: TransactionType;
 
   @ApiProperty({ 
-    description: 'Category of the transaction',
     enum: [...Object.values(IncomeCategory), ...Object.values(ExpenseCategory)]
   })
   @IsEnum([...Object.values(IncomeCategory), ...Object.values(ExpenseCategory)])
-  @IsNotEmpty()
   category: IncomeCategory | ExpenseCategory;
 
-  @ApiProperty({ description: 'Description of the transaction', required: false })
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   description?: string;
 
-  @ApiProperty({ description: 'Date of the transaction' })
+  @ApiProperty()
+  @Type(() => Date)
   @IsDate()
-  @IsNotEmpty()
   date: Date;
-} 
+}
