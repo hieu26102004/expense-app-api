@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { ExpenseModule } from './expense/expense.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { ExpenseModule } from './expense/expense.module';
     }),
     AuthModule,
     UsersModule,
-    ExpenseModule,
+    TransactionModule,
   ],
   controllers: [],
   providers: [],
